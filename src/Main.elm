@@ -273,7 +273,7 @@ view model =
                                     , img [ width 80, src ("svg/" ++ (String.words t |> List.head |> Maybe.withDefault "" |> String.toLower) ++ ".svg") ] []
                                     , hr [] []
                                     , div [ class "columns" ]
-                                        [ div [ class "column", style "background-color" "lightpink", style "min-height" "25vh" ]
+                                        [ div [ class "column", style "background-color" "lightpink", style "min-height" "35vh" ]
                                             ([ h5 [ class "title is-5" ] [ text "Lose" ]
                                              ]
                                                 ++ ((List.map (\pick -> p [ class "has-text-centered" ] [ text <| String.fromInt <| Tuple.first <| Tuple.first pick ]) <|
@@ -283,7 +283,7 @@ view model =
                                                         |> List.intersperse (br [] [])
                                                    )
                                             )
-                                        , div [ class "column", style "background-color" "lightgreen", style "min-height" "25vh" ]
+                                        , div [ class "column", style "background-color" "lightgreen", style "min-height" "35vh" ]
                                             ([ h5 [ class "title is-5" ] [ text "Gain" ]
                                              ]
                                                 ++ ((List.map (\pick -> p [ class "has-text-centered" ] [ text <| String.fromInt <| Tuple.first <| Tuple.first pick ]) <| List.filter (\pg -> Tuple.second pg == t) model.picks_going)

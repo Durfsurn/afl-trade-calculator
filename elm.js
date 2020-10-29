@@ -7579,7 +7579,7 @@ var $author$project$Main$view = function (model) {
 																			[
 																				$elm$html$Html$Attributes$class('column'),
 																				A2($elm$html$Html$Attributes$style, 'background-color', 'lightpink'),
-																				A2($elm$html$Html$Attributes$style, 'min-height', '25vh')
+																				A2($elm$html$Html$Attributes$style, 'min-height', '35vh')
 																			]),
 																		_Utils_ap(
 																			_List_fromArray(
@@ -7647,7 +7647,7 @@ var $author$project$Main$view = function (model) {
 																			[
 																				$elm$html$Html$Attributes$class('column'),
 																				A2($elm$html$Html$Attributes$style, 'background-color', 'lightgreen'),
-																				A2($elm$html$Html$Attributes$style, 'min-height', '25vh')
+																				A2($elm$html$Html$Attributes$style, 'min-height', '35vh')
 																			]),
 																		_Utils_ap(
 																			_List_fromArray(
