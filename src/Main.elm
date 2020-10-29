@@ -69,7 +69,7 @@ update msg model =
         PlayerChecked player ->
             case List.filter (\p -> p == player) model.players_checked |> List.length of
                 1 ->
-                    ( { model | players_checked = List.filter (\p -> p /= player) model.players_checked }, Cmd.none )
+                    ( { model | players_checked = List.filter (\p -> p /= player) model.players_checked, players_going = List.filter (\p -> Tuple.first p /= player) model.players_going }, Cmd.none )
 
                 _ ->
                     ( { model | players_checked = player :: model.players_checked }, Cmd.none )
@@ -77,7 +77,7 @@ update msg model =
         PickChecked pick ->
             case List.filter (\p -> p == pick) model.picks_checked |> List.length of
                 1 ->
-                    ( { model | picks_checked = List.filter (\p -> p /= pick) model.picks_checked }, Cmd.none )
+                    ( { model | picks_checked = List.filter (\p -> p /= pick) model.picks_checked, picks_going = List.filter (\p -> (Tuple.first p |> Tuple.first) /= Tuple.first pick) model.picks_going }, Cmd.none )
 
                 _ ->
                     ( { model | picks_checked = pick :: model.picks_checked }, Cmd.none )
