@@ -123,6 +123,7 @@ retiredPlayers =
     , "Anthony Treacy"
     , "Francis Watson"
     , "Tory Dickson"
+    , "Alex Rance"
     ]
 
 
