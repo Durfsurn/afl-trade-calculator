@@ -5168,6 +5168,10 @@ var $elm$core$List$filter = F2(
 			list);
 	});
 var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
 var $author$project$Teams$shortNameToLong = function (s) {
 	switch (s) {
 		case 'AC':
@@ -5322,9 +5326,14 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							players_going: A2(
-								$elm$core$List$cons,
-								_Utils_Tuple2(pl, team),
-								new_list)
+								$elm$core$List$filter,
+								function (l) {
+									return l.b !== '...';
+								},
+								A2(
+									$elm$core$List$cons,
+									_Utils_Tuple2(pl, team),
+									new_list))
 						}),
 					$elm$core$Platform$Cmd$none);
 			case 'PickGoing':
@@ -5342,11 +5351,16 @@ var $author$project$Main$update = F2(
 						model,
 						{
 							picks_going: A2(
-								$elm$core$List$cons,
-								_Utils_Tuple2(
-									_Utils_Tuple2(p, old_t),
-									$author$project$Teams$shortNameToLong(new_t)),
-								new_list)
+								$elm$core$List$filter,
+								function (l) {
+									return l.b !== '...';
+								},
+								A2(
+									$elm$core$List$cons,
+									_Utils_Tuple2(
+										_Utils_Tuple2(p, old_t),
+										$author$project$Teams$shortNameToLong(new_t)),
+									new_list))
 						}),
 					$elm$core$Platform$Cmd$none);
 			default:
@@ -5717,10 +5731,6 @@ var $author$project$Teams$positionPretty = function (s) {
 var $author$project$Teams$retiredPlayers = _List_fromArray(
 	['Bryce Gibbs', 'Riley Knight', 'Ayce Taylor', 'Patrick Wilson', 'Jacob Allison', 'Allen Christensen', 'Matt Eagles', 'Corey Lyons', 'Sam Skinner', 'Toby Wooller', 'Hugh Goddard', 'Matthew Kreuzer', 'Darcy Lang', 'Finbar O\'Dwyer', 'Ben Silvagni', 'Kade Simpson', 'Tim Broomhead', 'Lynden Dunn', 'Ben Reid ', 'Matthew Scharenberg', 'Travis Varcoe', 'Josh Begley', 'Tom Bellchambers', 'Noah Gown', 'Mitch Hibberd', 'Conor McKenna ', 'Shaun McKernan', 'Kobe Mutch', 'Isaiah Butters', 'Jason Carter', 'Hugh Dixon', 'Brandon Matera', 'Cam McCarthy', 'Tom North', 'Dillon O\'Reilly', 'Jarvis Pina', 'Gary Ablett', 'Jacob Kennerley', 'James Parsons', 'Blake Schlensog', 'Jacob Dawson', 'Corey Ellis', 'Sam Fletcher', 'Pearce Hanley', 'Jacob Heron', 'George Horlin-Smith', 'Jesse Joyce', 'Anthony Miles', 'Mitch Riordan', 'Josh Schoenfeld', 'Sam Jacobs', 'Heath Shaw', 'Tom Sheridan', 'James Frawley', 'Conor Glass', 'Will Golds', 'Ricky Henderson', 'Darren Minchington', 'Paul Puopolo', 'Jackson Ross', 'Ben Stratton', 'Harley Bennell', 'Kyle Dunkley', 'Corey Wagner', 'Josh Wagner', 'Paul Ahern', 'Joel Crocker', 'Majak Daw', 'Sam Durdin', 'Lachie Hosie', 'Ben Jacobs', 'Jamie Macmillan', 'Tom Murphy', 'Jasper Pittard', 'Marley Williams', 'Mason Wood', 'Joe Atley', 'Wylie Buzza', 'Tobin Cox', 'Brad Ebert', 'Riley Grundy', 'Cam Sutcliffe', 'Jack Watts', 'Justin Westhoff', 'Luke English', 'Fraser Turner', 'Ryan Abbott', 'Logan Austin', 'Jack Bell', 'Nathan Brown', 'Doulton Langlands', 'Jack Mayo', 'Michael Knoll', 'Jack Maibaum', 'Harry Reynolds', 'Brady Rowles', 'Ryley Stoddart', 'Hamish Brayshaw', 'Mitch O\'Neill', 'Nic Reid', 'Will Schofield', 'Anthony Treacy', 'Francis Watson', 'Tory Dickson']);
 var $elm$core$Basics$round = _Basics_round;
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$core$List$sortBy = _List_sortBy;
 var $elm$core$List$sort = function (xs) {
@@ -7039,7 +7049,8 @@ var $author$project$Main$view = function (model) {
 									$elm$html$Html$div,
 									_List_fromArray(
 										[
-											$elm$html$Html$Attributes$class('column')
+											$elm$html$Html$Attributes$class('column'),
+											A2($elm$html$Html$Attributes$style, 'min-width', '350px')
 										]),
 									_List_fromArray(
 										[
@@ -7047,7 +7058,9 @@ var $author$project$Main$view = function (model) {
 											$elm$html$Html$h5,
 											_List_fromArray(
 												[
-													$elm$html$Html$Attributes$class('title is-5')
+													$elm$html$Html$Attributes$class('title is-5'),
+													A2($elm$html$Html$Attributes$style, 'min-height', '44px'),
+													A2($elm$html$Html$Attributes$style, 'margin-bottom', '10px')
 												]),
 											_List_fromArray(
 												[

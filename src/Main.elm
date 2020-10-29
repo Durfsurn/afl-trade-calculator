@@ -125,8 +125,8 @@ view model =
             [ div [ class "columns", style "overflow-x" "scroll" ] <|
                 List.map
                     (\t ->
-                        div [ class "column" ]
-                            [ h5 [ class "title is-5" ] [ text t.name ]
+                        div [ class "column", style "min-width" "350px" ]
+                            [ h5 [ class "title is-5", style "min-height" "44px", style "margin-bottom" "10px" ] [ text t.name ]
                             , div [] [ text "Picks: " ]
                             , tr [] <|
                                 List.map
