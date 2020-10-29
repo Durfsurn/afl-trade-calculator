@@ -95,14 +95,14 @@ update msg model =
                 new_list =
                     List.filter (\pg -> Tuple.first pg /= pl) model.players_going
             in
-            ( { model | players_going = ( pl, team ) :: new_list }, Cmd.none )
+            ( { model | players_going = ( pl, team ) :: new_list |> List.filter (\l -> Tuple.second l /= "...") }, Cmd.none )
 
         PickGoing p old_t new_t ->
             let
                 new_list =
                     List.filter (\pg -> (Tuple.first pg |> Tuple.first) /= p) model.picks_going
             in
-            ( { model | picks_going = ( ( p, old_t ), shortNameToLong new_t ) :: new_list }, Cmd.none )
+            ( { model | picks_going = ( ( p, old_t ), shortNameToLong new_t ) :: new_list |> List.filter (\l -> Tuple.second l /= "...") }, Cmd.none )
 
         ExportModal state ->
             ( { model | export_modal = state }, Cmd.none )
