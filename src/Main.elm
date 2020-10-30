@@ -145,7 +145,7 @@ update msg model =
             ( { model | export_modal = state, copied = Nothing, hash = Nothing }, Cmd.none )
 
         ImportModal state ->
-            ( { model | import_modal = state, copied = Nothing }, Cmd.none )
+            ( { model | import_modal = state, copied = Nothing, hash = Nothing }, Cmd.none )
 
         PlayerFilter inp ->
             ( { model | player_filter = inp }, Cmd.none )
@@ -175,9 +175,6 @@ update msg model =
 
                 deflate =
                     Flate.deflate (stringAsBytes mdl)
-
-                _ =
-                    Debug.log "" <| Flate.deflate (stringAsBytes mdl)
             in
             ( model, Ports.copy (BEncode.encode (BEncode.bytes deflate)) )
 
@@ -841,6 +838,7 @@ view model =
             , div [ class "modal-card", style "min-width" "85vw", style "border-radius" "30px" ]
                 [ textarea [ onInput ImportHash, class "textarea", value "", placeholder "Paste hash here." ] []
                 ]
+            , button [ class "modal-close is-large", onClick (ImportModal False) ] []
             ]
         , div
             [ class "modal"

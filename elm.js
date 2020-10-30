@@ -9469,320 +9469,6 @@ var $folkertdev$elm_flate$LZ77$maxWindowSize = $folkertdev$elm_flate$LZ77$max_di
 var $folkertdev$elm_flate$Flate$deflate = $folkertdev$elm_flate$Flate$deflateWithOptions(
 	$folkertdev$elm_flate$Flate$Dynamic(
 		$folkertdev$elm_flate$Flate$WithWindowSize($folkertdev$elm_flate$LZ77$maxWindowSize)));
-var $folkertdev$elm_flate$Checksum$Crc32$tinf_crc32case = function (i) {
-	switch (i) {
-		case 0:
-			return 0;
-		case 1:
-			return 498536548;
-		case 2:
-			return 997073096;
-		case 3:
-			return 651767980;
-		case 4:
-			return 1994146192;
-		case 5:
-			return 1802195444;
-		case 6:
-			return 1303535960;
-		case 7:
-			return 1342533948;
-		case 8:
-			return 3988292384;
-		case 9:
-			return 4027552580;
-		case 10:
-			return 3604390888;
-		case 11:
-			return 3412177804;
-		case 12:
-			return 2607071920;
-		case 13:
-			return 2262029012;
-		case 14:
-			return 2685067896;
-		default:
-			return 3183342108;
-	}
-};
-var $elm$core$Bitwise$xor = _Bitwise_xor;
-var $folkertdev$elm_flate$Checksum$Crc32$step = F2(
-	function (_byte, crc) {
-		var a = (crc ^ _byte) >>> 0;
-		var b = ((a >>> 4) ^ $folkertdev$elm_flate$Checksum$Crc32$tinf_crc32case(a & 15)) >>> 0;
-		var c = (b >>> 4) ^ $folkertdev$elm_flate$Checksum$Crc32$tinf_crc32case(b & 15);
-		return c;
-	});
-var $folkertdev$elm_flate$Checksum$Crc32$crc32Help = function (_v0) {
-	var remaining = _v0.remaining;
-	var crc = _v0.crc;
-	return (remaining >= 8) ? A3(
-		$elm$bytes$Bytes$Decode$map2,
-		F2(
-			function (word1, word2) {
-				var byte8 = 255 & word2;
-				var byte7 = 255 & (word2 >>> 8);
-				var byte6 = 255 & (word2 >>> 16);
-				var byte5 = 255 & (word2 >>> 24);
-				var byte4 = 255 & word1;
-				var byte3 = 255 & (word1 >>> 8);
-				var byte2 = 255 & (word1 >>> 16);
-				var byte1 = 255 & (word1 >>> 24);
-				return $elm$bytes$Bytes$Decode$Loop(
-					{
-						crc: A2(
-							$folkertdev$elm_flate$Checksum$Crc32$step,
-							byte8,
-							A2(
-								$folkertdev$elm_flate$Checksum$Crc32$step,
-								byte7,
-								A2(
-									$folkertdev$elm_flate$Checksum$Crc32$step,
-									byte6,
-									A2(
-										$folkertdev$elm_flate$Checksum$Crc32$step,
-										byte5,
-										A2(
-											$folkertdev$elm_flate$Checksum$Crc32$step,
-											byte4,
-											A2(
-												$folkertdev$elm_flate$Checksum$Crc32$step,
-												byte3,
-												A2(
-													$folkertdev$elm_flate$Checksum$Crc32$step,
-													byte2,
-													A2($folkertdev$elm_flate$Checksum$Crc32$step, byte1, crc)))))))),
-						remaining: remaining - 8
-					});
-			}),
-		$elm$bytes$Bytes$Decode$unsignedInt32($elm$bytes$Bytes$BE),
-		$elm$bytes$Bytes$Decode$unsignedInt32($elm$bytes$Bytes$BE)) : ((remaining > 0) ? A2(
-		$elm$bytes$Bytes$Decode$map,
-		function (_byte) {
-			return $elm$bytes$Bytes$Decode$Loop(
-				{
-					crc: A2($folkertdev$elm_flate$Checksum$Crc32$step, _byte, crc),
-					remaining: remaining - 1
-				});
-		},
-		$elm$bytes$Bytes$Decode$unsignedInt8) : $elm$bytes$Bytes$Decode$succeed(
-		$elm$bytes$Bytes$Decode$Done((crc ^ 4294967295) >>> 0)));
-};
-var $folkertdev$elm_flate$Checksum$Crc32$tinf_crc32 = function (buffer) {
-	var length = $elm$bytes$Bytes$width(buffer);
-	var initialCrc = 4294967295;
-	return (!length) ? 0 : A2(
-		$elm$core$Maybe$withDefault,
-		0,
-		A2(
-			$elm$bytes$Bytes$Decode$decode,
-			A2(
-				$elm$bytes$Bytes$Decode$loop,
-				{crc: initialCrc, remaining: length},
-				$folkertdev$elm_flate$Checksum$Crc32$crc32Help),
-			buffer));
-};
-var $folkertdev$elm_flate$Checksum$Crc32$crc32 = $folkertdev$elm_flate$Checksum$Crc32$tinf_crc32;
-var $folkertdev$elm_flate$Flate$deflateGZipWithOptions = F2(
-	function (encoding, buffer) {
-		var encodedTrailer = _List_fromArray(
-			[
-				A2(
-				$elm$bytes$Bytes$Encode$unsignedInt32,
-				$elm$bytes$Bytes$LE,
-				$folkertdev$elm_flate$Checksum$Crc32$crc32(buffer)),
-				A2(
-				$elm$bytes$Bytes$Encode$unsignedInt32,
-				$elm$bytes$Bytes$LE,
-				A2(
-					$elm$core$Basics$modBy,
-					4294967296,
-					$elm$bytes$Bytes$width(buffer)))
-			]);
-		var encodedHeader = _List_fromArray(
-			[
-				$elm$bytes$Bytes$Encode$unsignedInt8(31),
-				$elm$bytes$Bytes$Encode$unsignedInt8(139),
-				$elm$bytes$Bytes$Encode$unsignedInt8(8),
-				$elm$bytes$Bytes$Encode$unsignedInt8(0),
-				A2($elm$bytes$Bytes$Encode$unsignedInt32, $elm$bytes$Bytes$LE, 0),
-				$elm$bytes$Bytes$Encode$unsignedInt8(0),
-				$elm$bytes$Bytes$Encode$unsignedInt8(255)
-			]);
-		var data = A2($folkertdev$elm_flate$Flate$deflateWithOptions, encoding, buffer);
-		return $elm$bytes$Bytes$Encode$encode(
-			$elm$bytes$Bytes$Encode$sequence(
-				_Utils_ap(
-					encodedHeader,
-					_Utils_ap(
-						_List_fromArray(
-							[
-								$elm$bytes$Bytes$Encode$bytes(data)
-							]),
-						encodedTrailer))));
-	});
-var $folkertdev$elm_flate$Flate$deflateGZip = $folkertdev$elm_flate$Flate$deflateGZipWithOptions(
-	$folkertdev$elm_flate$Flate$Dynamic(
-		$folkertdev$elm_flate$Flate$WithWindowSize($folkertdev$elm_flate$LZ77$maxWindowSize)));
-var $folkertdev$elm_flate$Checksum$Adler32$a32 = {base: 65521, nmax: 5552};
-var $folkertdev$elm_flate$Checksum$Adler32$step8Bytes = F5(
-	function (remaining, s1, s2, word1, word2) {
-		var byte8 = 255 & word2;
-		var byte7 = 255 & (word2 >>> 8);
-		var byte6 = 255 & (word2 >>> 16);
-		var byte5 = 255 & (word2 >>> 24);
-		var byte4 = 255 & word1;
-		var byte3 = 255 & (word1 >>> 8);
-		var byte2 = 255 & (word1 >>> 16);
-		var byte1 = 255 & (word1 >>> 24);
-		var s1a_1 = s1 + byte1;
-		var s1a_2 = s1a_1 + byte2;
-		var s1a_3 = s1a_2 + byte3;
-		var s1a_4 = s1a_3 + byte4;
-		var s2a_1 = s2 + s1a_1;
-		var s2a_2 = s2a_1 + s1a_2;
-		var s2a_3 = s2a_2 + s1a_3;
-		var s2a_4 = s2a_3 + s1a_4;
-		var s1b_1 = s1a_4 + byte5;
-		var s1b_2 = s1b_1 + byte6;
-		var s1b_3 = s1b_2 + byte7;
-		var s1b_4 = s1b_3 + byte8;
-		var s2b_1 = s2a_4 + s1b_1;
-		var s2b_2 = s2b_1 + s1b_2;
-		var s2b_3 = s2b_2 + s1b_3;
-		var s2b_4 = s2b_3 + s1b_4;
-		return $elm$bytes$Bytes$Decode$Loop(
-			{remaining: remaining - 8, s1: s1b_4, s2: s2b_4});
-	});
-var $folkertdev$elm_flate$Checksum$Adler32$processChunkHelp = function (_v0) {
-	var remaining = _v0.remaining;
-	var s1 = _v0.s1;
-	var s2 = _v0.s2;
-	return (remaining >= 8) ? A3(
-		$elm$bytes$Bytes$Decode$map2,
-		A3($folkertdev$elm_flate$Checksum$Adler32$step8Bytes, remaining, s1, s2),
-		$elm$bytes$Bytes$Decode$unsignedInt32($elm$bytes$Bytes$BE),
-		$elm$bytes$Bytes$Decode$unsignedInt32($elm$bytes$Bytes$BE)) : ((remaining > 0) ? A2(
-		$elm$bytes$Bytes$Decode$map,
-		function (_byte) {
-			return $elm$bytes$Bytes$Decode$Loop(
-				{remaining: remaining - 1, s1: s1 + _byte, s2: (s1 + _byte) + s2});
-		},
-		$elm$bytes$Bytes$Decode$unsignedInt8) : $elm$bytes$Bytes$Decode$succeed(
-		$elm$bytes$Bytes$Decode$Done(
-			{s1: s1 % $folkertdev$elm_flate$Checksum$Adler32$a32.base, s2: s2 % $folkertdev$elm_flate$Checksum$Adler32$a32.base})));
-};
-var $folkertdev$elm_flate$Checksum$Adler32$processChunk = function (config) {
-	return A2($elm$bytes$Bytes$Decode$loop, config, $folkertdev$elm_flate$Checksum$Adler32$processChunkHelp);
-};
-var $folkertdev$elm_flate$Checksum$Adler32$chunkedFold = function (_v0) {
-	var bufferSize = _v0.bufferSize;
-	var maxBlockSize = _v0.maxBlockSize;
-	var go = function (_v1) {
-		var remainingLength = _v1.remainingLength;
-		var s1 = _v1.s1;
-		var s2 = _v1.s2;
-		return (!remainingLength) ? $elm$bytes$Bytes$Decode$succeed(
-			$elm$bytes$Bytes$Decode$Done(
-				{s1: s1, s2: s2})) : ((_Utils_cmp(remainingLength, maxBlockSize) < 0) ? A2(
-			$elm$bytes$Bytes$Decode$map,
-			$elm$bytes$Bytes$Decode$Done,
-			$folkertdev$elm_flate$Checksum$Adler32$processChunk(
-				{remaining: remainingLength, s1: s1, s2: s2})) : A2(
-			$elm$bytes$Bytes$Decode$map,
-			function (result) {
-				return $elm$bytes$Bytes$Decode$Loop(
-					{remainingLength: remainingLength - maxBlockSize, s1: result.s1, s2: result.s2});
-			},
-			$folkertdev$elm_flate$Checksum$Adler32$processChunk(
-				{remaining: maxBlockSize, s1: s1, s2: s2})));
-	};
-	return A2(
-		$elm$bytes$Bytes$Decode$loop,
-		{remainingLength: bufferSize, s1: 1, s2: 0},
-		go);
-};
-var $folkertdev$elm_flate$Checksum$Adler32$adler32 = function (buffer) {
-	var _v0 = A2(
-		$elm$bytes$Bytes$Decode$decode,
-		$folkertdev$elm_flate$Checksum$Adler32$chunkedFold(
-			{
-				bufferSize: $elm$bytes$Bytes$width(buffer),
-				maxBlockSize: $folkertdev$elm_flate$Checksum$Adler32$a32.nmax
-			}),
-		buffer);
-	if (_v0.$ === 'Nothing') {
-		return 0;
-	} else {
-		var s1 = _v0.a.s1;
-		var s2 = _v0.a.s2;
-		return ((s2 << 16) | s1) >>> 0;
-	}
-};
-var $elm$core$Basics$neq = _Utils_notEqual;
-var $elm$core$Basics$pow = _Basics_pow;
-var $folkertdev$elm_flate$Flate$deflateZlibWithOptions = F2(
-	function (encoding, buffer) {
-		var windowSizeHelp = function (size) {
-			var kb = 1024;
-			return (size <= 256) ? 0 : ((size <= 512) ? 1 : ((_Utils_cmp(size, 1 * kb) < 1) ? 2 : ((_Utils_cmp(size, 2 * kb) < 1) ? 3 : ((_Utils_cmp(size, 4 * kb) < 1) ? 4 : ((_Utils_cmp(size, 8 * kb) < 1) ? 5 : ((_Utils_cmp(size, 16 * kb) < 1) ? 6 : ((_Utils_cmp(size, 32 * kb) < 1) ? 7 : 0)))))));
-		};
-		var windowSize = function () {
-			switch (encoding.$) {
-				case 'Raw':
-					return 0;
-				case 'Static':
-					if (encoding.a.$ === 'NoCompression') {
-						var _v1 = encoding.a;
-						return 0;
-					} else {
-						var size = encoding.a.a;
-						return windowSizeHelp(size);
-					}
-				default:
-					if (encoding.a.$ === 'NoCompression') {
-						var _v2 = encoding.a;
-						return 0;
-					} else {
-						var size = encoding.a.a;
-						return windowSizeHelp(size);
-					}
-			}
-		}();
-		var mask16 = function (value) {
-			return value & (A2($elm$core$Basics$pow, 2, 16) - 1);
-		};
-		var encodedTrailer = _List_fromArray(
-			[
-				A2(
-				$elm$bytes$Bytes$Encode$unsignedInt32,
-				$elm$bytes$Bytes$BE,
-				$folkertdev$elm_flate$Checksum$Adler32$adler32(buffer))
-			]);
-		var data = A2($folkertdev$elm_flate$Flate$deflateWithOptions, encoding, buffer);
-		var compressionLevel = 2;
-		var cmf = (windowSize << 4) | 8;
-		var check = (cmf << 8) + (compressionLevel << 6);
-		var flag = (!(!A2($elm$core$Basics$modBy, 31, check))) ? ((compressionLevel << 6) + (31 - A2($elm$core$Basics$modBy, 31, check))) : (compressionLevel << 6);
-		var encodedHeader = _List_fromArray(
-			[
-				$elm$bytes$Bytes$Encode$unsignedInt8(cmf),
-				$elm$bytes$Bytes$Encode$unsignedInt8(flag)
-			]);
-		return $elm$bytes$Bytes$Encode$encode(
-			$elm$bytes$Bytes$Encode$sequence(
-				_Utils_ap(
-					encodedHeader,
-					_Utils_ap(
-						_List_fromArray(
-							[
-								$elm$bytes$Bytes$Encode$bytes(data)
-							]),
-						encodedTrailer))));
-	});
-var $folkertdev$elm_flate$Flate$deflateZlib = $folkertdev$elm_flate$Flate$deflateZlibWithOptions(
-	$folkertdev$elm_flate$Flate$Dynamic(
-		$folkertdev$elm_flate$Flate$WithWindowSize($folkertdev$elm_flate$LZ77$maxWindowSize)));
 var $elm$bytes$Bytes$Encode$Utf8 = F2(
 	function (a, b) {
 		return {$: 'Utf8', a: a, b: b};
@@ -10495,6 +10181,7 @@ var $elm$core$Dict$foldl = F3(
 			}
 		}
 	});
+var $elm$core$Basics$neq = _Utils_notEqual;
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
@@ -12043,7 +11730,6 @@ var $folkertdev$elm_flate$Inflate$Inflate$inflate = function (buffer) {
 	}
 };
 var $folkertdev$elm_flate$Flate$inflate = $folkertdev$elm_flate$Inflate$Inflate$inflate;
-var $elm$core$Debug$log = _Debug_log;
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -12297,7 +11983,7 @@ var $author$project$Main$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{copied: $elm$core$Maybe$Nothing, import_modal: state}),
+						{copied: $elm$core$Maybe$Nothing, hash: $elm$core$Maybe$Nothing, import_modal: state}),
 					$elm$core$Platform$Cmd$none);
 			case 'PlayerFilter':
 				var inp = msg.a;
@@ -12362,21 +12048,6 @@ var $author$project$Main$update = F2(
 					$author$project$Main$encodeModel(model));
 				var deflate = $folkertdev$elm_flate$Flate$deflate(
 					$author$project$Main$stringAsBytes(mdl));
-				var _v4 = A2(
-					$elm$core$Debug$log,
-					'',
-					$folkertdev$elm_flate$Flate$deflate(
-						$author$project$Main$stringAsBytes(mdl)));
-				var _v5 = A2(
-					$elm$core$Debug$log,
-					'',
-					$folkertdev$elm_flate$Flate$deflateGZip(
-						$author$project$Main$stringAsBytes(mdl)));
-				var _v6 = A2(
-					$elm$core$Debug$log,
-					'',
-					$folkertdev$elm_flate$Flate$deflateZlib(
-						$author$project$Main$stringAsBytes(mdl)));
 				return _Utils_Tuple2(
 					model,
 					$author$project$Ports$copy(
@@ -14909,7 +14580,16 @@ var $author$project$Main$view = function (model) {
 										$elm$html$Html$Attributes$placeholder('Paste hash here.')
 									]),
 								_List_Nil)
-							]))
+							])),
+						A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('modal-close is-large'),
+								$elm$html$Html$Events$onClick(
+								$author$project$Main$ImportModal(false))
+							]),
+						_List_Nil)
 					])),
 				A2(
 				$elm$html$Html$div,
