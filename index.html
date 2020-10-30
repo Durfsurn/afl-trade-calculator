@@ -1,4 +1,4 @@
-<html>
+<html style="overflow-y: auto;">
 
 <head>
 	<meta charset="UTF-8">
@@ -6,8 +6,8 @@
 	<script src="elm.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.css">
 	<link rel="shortcut icon" href="svg/favicon.svg">
-	<meta property="og:image" content="svg/favicon.svg"/>
-	<meta property="og:title" content="AFL Trade Calculator"/>
+	<meta property="og:image" content="svg/favicon.svg" />
+	<meta property="og:title" content="AFL Trade Calculator" />
 </head>
 
 <body>
@@ -15,8 +15,23 @@
 	<script>
 		var app = Elm.Main.init({
 			node: document.getElementById('myapp'),
-    		flags: null
+			flags: null
 		});
+
+		app.ports.copy.subscribe((str) => {
+			textToClipboard(str);
+			console.log("Copied str.");
+			app.ports.copyDone.send(str);
+		});
+
+		function textToClipboard(text) {
+			var dummy = document.createElement("textarea");
+			document.body.appendChild(dummy);
+			dummy.value = text;
+			dummy.select();
+			document.execCommand("copy");
+			document.body.removeChild(dummy);
+		}
 	</script>
 </body>
 

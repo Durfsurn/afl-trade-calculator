@@ -17,6 +17,35 @@ type alias Player =
     }
 
 
+futurePickRat : String -> Float
+futurePickRat s =
+    let
+        base =
+            if String.contains "R1" s then
+                500
+
+            else if String.contains "R2" s then
+                400
+
+            else if String.contains "R3" s then
+                200
+
+            else
+                100
+    in
+    if String.contains "2021" s then
+        base / 1
+
+    else if String.contains "2022" s then
+        base / 1.1
+
+    else if String.contains "2023" s then
+        base / 1.2
+
+    else
+        base / 1.3
+
+
 retiredPlayers : List String
 retiredPlayers =
     [ "Bryce Gibbs"
@@ -726,6 +755,7 @@ melbourneDemonsPicks =
 northMelbourneKangaroosPicks : List Int
 northMelbourneKangaroosPicks =
     [ 2
+    , 9
     , 25
     , 57
     , 65
